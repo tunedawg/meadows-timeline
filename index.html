@@ -230,7 +230,7 @@
 
     .year-text {
       fill: #ffffff;
-      font-size: 30px;
+      font-size: 38px;
       font-weight: 900;
       text-anchor: middle;
       dominant-baseline: middle;
@@ -459,8 +459,8 @@
           <g id="bars"></g>
           <g id="icons"></g>
           <g id="yearBadge">
-            <rect class="year-pill" x="300" y="398" width="240" height="72" rx="18"/>
-            <text class="year-text" id="yearText" x="420" y="435">1977</text>
+            <rect class="year-pill" x="340" y="398" width="154" height="72" rx="18"/>
+            <text class="year-text" id="yearText" x="417" y="435">1977</text>
           </g>
           <g id="effects"></g>
         </svg>
@@ -470,15 +470,15 @@
 
   <script>
     const employees = [
-      { name: "Vanessa Meadows", start: 1992, end: 2022.92, gradient: "g8", featured: true },
-      { name: "Patricia Switzer", start: 1977.25, end: 2022.08, gradient: "g0" },
-      { name: "Peggyann Guerrero", start: 1991.92, end: 2022.8, gradient: "g1" },
-      { name: "April Johnson", start: 1992, end: 2022.92, gradient: "g2" },
-      { name: "Cozetta Stokes", start: 2001, end: 2022.42, gradient: "g3" },
-      { name: "Doritha Daniel", start: 2001.22, end: 2019.22, gradient: "g4" },
-      { name: "Jenifer Ellner", start: 2018.67, end: 2026.08, gradient: "g5" },
-      { name: "Kimberlee Hanewinkel", start: 2022, end: 2026.08, gradient: "g6" },
-      { name: "Cody Dayton", start: 2021.83, end: 2026.08, gradient: "g7" }
+      { name: "Vanessa Meadows", start: 1992, end: 2022, gradient: "g8", featured: true },
+      { name: "Patricia Switzer", start: 1977, end: 2022, gradient: "g0" },
+      { name: "Peggyann Guerrero", start: 1992, end: 2022, gradient: "g1" },
+      { name: "April Johnson", start: 1992, end: 2022, gradient: "g2" },
+      { name: "Cozetta Stokes", start: 2001, end: 2022, gradient: "g3" },
+      { name: "Doritha Daniel", start: 2001, end: 2019, gradient: "g4" },
+      { name: "Jenifer Ellner", start: 2018, end: 2026, gradient: "g5" },
+      { name: "Kimberlee Hanewinkel", start: 2022, end: 2026, gradient: "g6" },
+      { name: "Cody Dayton", start: 2021, end: 2026, gradient: "g7" }
     ];
 
     const stage = document.querySelector(".stage");
@@ -500,29 +500,25 @@
     const iconPerson = document.getElementById("iconPerson");
 
     const minYear = 1977;
-    const maxYear = 2026.08;
+    const maxYear = 2026;
     const focusStartYear = 2020;
     const focusEndYear = 2022;
     const plot = { left: 220, focus: 760, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
     const segments = [
       { from: 1977, to: 2019, ms: 10000 },
-      { from: 2020, to: 2022, ms: 6200 },
-      { from: 2022, to: 2023, ms: 7200 },
-      { from: 2023, to: 2026, ms: 3000 }
+      { from: 2020, to: 2022, ms: 5200 },
+      { from: 2022, to: 2026, ms: 3800 }
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
       { year: 2018, elapsed: 8200, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
       { year: 2019, elapsed: 10000, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
       { year: 2019, elapsed: 10000, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
-      { year: 2021.83, elapsed: 14758, event: "kim-cody", title: "November 2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
-      { year: 2022, elapsed: 16200, event: "kim-cody", title: "January 2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022.08, elapsed: 16776, title: "January 2022: Patricia Switzer retires", people: ["Patricia Switzer"], variant: "firing" },
-      { year: 2022.42, elapsed: 19224, title: "May 2022: Cozetta Stokes retires", people: ["Cozetta Stokes"], variant: "firing" },
-      { year: 2022.8, elapsed: 21960, title: "October 2022: Peggyann Guerrero leaves", people: ["Peggyann Guerrero"], variant: "firing" },
-      { year: 2022.92, elapsed: 22824, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022.92, elapsed: 22824, title: "November 2022: Wash U cleans house", people: ["Vanessa Meadows", "April Johnson"], variant: "firing" },
-      { year: 2022.92, elapsed: 22824, title: ["November 2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2021, elapsed: 12600, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
+      { year: 2022, elapsed: 15200, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
+      { year: 2022, elapsed: 15200, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022, elapsed: 15200, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022, elapsed: 15200, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
@@ -591,16 +587,6 @@
     }
 
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-
-    function displayDateLabel(year) {
-      if (year >= 2021.75 && year < 2023) {
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const wholeYear = Math.floor(year);
-        const monthIndex = clamp(Math.floor((year - wholeYear) * 12 + 0.01), 0, 11);
-        return `${monthNames[monthIndex]} ${wholeYear}`;
-      }
-      return Math.floor(year).toString();
-    }
 
     function loadPersistedIcons() {
       try {
@@ -1061,7 +1047,7 @@
     function renderTimelineState(state) {
       const currentYear = state.year;
       displayYear = currentYear;
-      yearText.textContent = displayDateLabel(currentYear);
+      yearText.textContent = Math.floor(currentYear).toString();
       drawBurst(state.event, state.eventProgress);
 
       const bottom = plot.top + employees.length * plot.rowGap + 18;
@@ -1085,7 +1071,7 @@
         const isDoritha = emp.name === "Doritha Daniel";
         const isVanessa = emp.name === "Vanessa Meadows";
         const visualExitYear = isDoritha ? 2019 : emp.end;
-        const exitProgress = isKeeper ? 0 : clamp((currentYear - visualExitYear) / 0.22, 0, 1);
+        const exitProgress = isKeeper ? 0 : clamp((currentYear - visualExitYear) / 1.2, 0, 1);
         const exitLift = -36 * exitProgress;
         const exitDrift = 38 * exitProgress;
         const exitOpacity = 1 - 0.88 * exitProgress;
