@@ -562,8 +562,8 @@
       { from: 2018, to: 2019, ms: 2600 },
       { from: 2020, to: 2021, ms: 1600 },
       { from: 2021, to: 2022, ms: 2100 },
-      { from: 2022, to: 2023, ms: 4600 },
-      { from: 2023, to: 2024, ms: 2000 }
+      { from: 2022, to: 2023, ms: 8200 },
+      { from: 2023, to: 2024, ms: 1800 }
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
@@ -572,9 +572,9 @@
       { year: 2019, elapsed: 12600, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
       { year: 2021, elapsed: 14200, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
       { year: 2022, elapsed: 16300, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022, elapsed: 16300, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022, elapsed: 16300, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022, elapsed: 16300, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2022.98, elapsed: 24336, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022.98, elapsed: 24336, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022.98, elapsed: 24336, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
@@ -1290,7 +1290,7 @@
         const isDoritha = emp.name === "Doritha Daniel";
         const isVanessa = emp.name === "Vanessa Meadows";
         const visualExitYear = endYear;
-        const exitWindow = focusLocked && visualExitYear >= 2022 ? 0.16 : 0.45;
+        const exitWindow = focusLocked && visualExitYear >= 2022 ? 0.24 : 0.45;
         const exitProgress = isKeeper ? 0 : clamp((currentYear - visualExitYear) / exitWindow, 0, 1);
         const exitLift = -36 * exitProgress;
         const exitDrift = 38 * exitProgress;
