@@ -572,7 +572,7 @@
     const plot = { left: 220, focus: 760, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
     const segments = [
       { from: 1977, to: 2018, ms: 14930 },
-      { from: 2018, to: 2019, ms: 1430 },
+      { from: 2018, to: 2019, ms: 3200 },
       { from: 2020, to: 2021, ms: 3760 },
       { from: 2021, to: 2022, ms: 5170 },
       { from: 2022, to: 2023, ms: 4300 },
@@ -581,13 +581,13 @@
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
       { year: 2018, elapsed: 14930, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
-      { year: 2019, elapsed: 16360, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
-      { year: 2019, elapsed: 16360, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
-      { year: 2021, elapsed: 20120, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
-      { year: 2022, elapsed: 25290, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022.98, elapsed: 29504, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022.98, elapsed: 29504, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022.98, elapsed: 29504, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2019, elapsed: 18130, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
+      { year: 2019, elapsed: 18130, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
+      { year: 2021, elapsed: 21890, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
+      { year: 2022, elapsed: 27060, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
+      { year: 2022.98, elapsed: 31274, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022.98, elapsed: 31274, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022.98, elapsed: 31274, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
