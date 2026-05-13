@@ -230,7 +230,7 @@
 
     .year-text {
       fill: #ffffff;
-      font-size: 38px;
+      font-size: 32px;
       font-weight: 900;
       text-anchor: middle;
       dominant-baseline: middle;
@@ -512,8 +512,8 @@
           <g id="bars"></g>
           <g id="icons"></g>
           <g id="yearBadge">
-            <rect class="year-pill" x="316" y="398" width="210" height="72" rx="18"/>
-            <text class="year-text" id="yearText" x="421" y="435">1977</text>
+            <rect class="year-pill" x="30" y="486" width="184" height="62" rx="16"/>
+            <text class="year-text" id="yearText" x="122" y="517">1977</text>
           </g>
           <g id="effects"></g>
         </svg>
@@ -558,23 +558,23 @@
     const focusEndYear = 2024;
     const plot = { left: 220, focus: 760, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
     const segments = [
-      { from: 1977, to: 2018, ms: 10000 },
-      { from: 2018, to: 2019, ms: 2600 },
-      { from: 2020, to: 2021, ms: 1600 },
-      { from: 2021, to: 2022, ms: 2100 },
-      { from: 2022, to: 2023, ms: 8200 },
-      { from: 2023, to: 2024, ms: 1800 }
+      { from: 1977, to: 2018, ms: 14930 },
+      { from: 2018, to: 2019, ms: 1430 },
+      { from: 2020, to: 2021, ms: 3760 },
+      { from: 2021, to: 2022, ms: 5170 },
+      { from: 2022, to: 2023, ms: 10340 },
+      { from: 2023, to: 2024, ms: 4230 }
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
-      { year: 2018, elapsed: 10000, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
-      { year: 2019, elapsed: 12600, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
-      { year: 2019, elapsed: 12600, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
-      { year: 2021, elapsed: 14200, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
-      { year: 2022, elapsed: 16300, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022.98, elapsed: 24336, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022.98, elapsed: 24336, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022.98, elapsed: 24336, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2018, elapsed: 14930, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
+      { year: 2019, elapsed: 16360, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
+      { year: 2019, elapsed: 16360, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
+      { year: 2021, elapsed: 20120, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
+      { year: 2022, elapsed: 25290, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
+      { year: 2022.98, elapsed: 35423, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022.98, elapsed: 35423, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022.98, elapsed: 35423, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
@@ -890,9 +890,6 @@
       const text = make("text", { class: "game-over", x: 610, y: 295 });
       text.textContent = "GAME OVER!";
       effects.appendChild(text);
-      const hint = make("text", { class: "game-over-hint", x: 610, y: 388 });
-      hint.textContent = "Click or press Space for event timeline";
-      effects.appendChild(hint);
     }
 
     function chevronPath(x, y, width, height, first, last) {
@@ -1022,9 +1019,6 @@
         });
       });
 
-      const footer = make("text", { class: "final-hint", x: 610, y: 558 });
-      footer.textContent = "Click or press Space to restart";
-      effects.appendChild(footer);
     }
 
     function employeeByName(name) {
@@ -1121,9 +1115,6 @@
         });
       }
 
-      const hint = make("text", { class: "phase-hint", x: 610, y: 550 });
-      hint.textContent = "Click or press Space to continue";
-      effects.appendChild(hint);
     }
 
     function clearPhaseOverlay() {
@@ -1216,9 +1207,6 @@
           if (blastProgress >= 1) {
             blastComplete = true;
             svg.style.transform = "translate(0, 0)";
-            const hint = make("text", { class: "phase-hint", x: 610, y: 550 });
-            hint.textContent = "Click or press Space to continue";
-            effects.appendChild(hint);
           }
         }
         requestAnimationFrame(drawFrame);
