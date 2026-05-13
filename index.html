@@ -324,8 +324,61 @@
       filter: drop-shadow(0 18px 24px rgba(102, 0, 0, 0.34));
     }
 
+    .game-over-hint {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      fill: #761622;
+      font-size: 20px;
+      font-weight: 900;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      letter-spacing: 0;
+    }
+
     .game-over-veil {
       fill: rgba(255, 245, 245, 0.74);
+    }
+
+    .final-title {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      fill: #172033;
+      font-size: 34px;
+      font-weight: 950;
+      text-anchor: middle;
+      letter-spacing: 0;
+    }
+
+    .final-subtitle,
+    .final-hint {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      fill: #5d6677;
+      font-size: 15px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .final-year {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      fill: #ffffff;
+      font-size: 16px;
+      font-weight: 950;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .final-label {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      fill: #202b3d;
+      font-size: 14px;
+      font-weight: 850;
+      text-anchor: middle;
+    }
+
+    .final-note {
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      fill: #697386;
+      font-size: 11px;
+      font-weight: 800;
+      text-anchor: middle;
     }
 
     .phase-veil {
@@ -536,6 +589,7 @@
     let hasStarted = false;
     let displayYear = minYear;
     let focusLocked = false;
+    let finalTimelineShown = false;
 
     const ns = "http://www.w3.org/2000/svg";
     const make = (tag, attrs = {}) => {
@@ -797,6 +851,7 @@
     function drawGameOver() {
       effects.innerHTML = "";
       svg.style.transform = "translate(0, 0)";
+      finalTimelineShown = false;
       effects.appendChild(make("rect", {
         class: "game-over-veil",
         x: 0,
@@ -807,6 +862,142 @@
       const text = make("text", { class: "game-over", x: 610, y: 295 });
       text.textContent = "GAME OVER!";
       effects.appendChild(text);
+      const hint = make("text", { class: "game-over-hint", x: 610, y: 388 });
+      hint.textContent = "Click or press Space for event timeline";
+      effects.appendChild(hint);
+    }
+
+    function chevronPath(x, y, width, height, first, last) {
+      const point = Math.min(22, width * 0.22);
+      const notch = first ? 0 : point * 0.62;
+      const right = last ? x + width : x + width - point;
+      const tip = last ? x + width : x + width;
+      const mid = y + height / 2;
+      return [
+        `M ${x + notch} ${y}`,
+        `L ${right} ${y}`,
+        last ? `L ${tip} ${y}` : `L ${tip} ${mid}`,
+        `L ${right} ${y + height}`,
+        `L ${x + notch} ${y + height}`,
+        first ? `L ${x} ${y + height}` : `L ${x + point * 0.62} ${mid}`,
+        first ? `L ${x} ${y}` : `L ${x + notch} ${y}`,
+        "Z"
+      ].join(" ");
+    }
+
+    function drawFinalTimeline() {
+      finalTimelineShown = true;
+      effects.innerHTML = "";
+      svg.style.transform = "translate(0, 0)";
+      document.getElementById("yearBadge").setAttribute("opacity", "0");
+      story.classList.add("backdrop-blur");
+      grid.classList.add("backdrop-blur");
+      bars.classList.add("backdrop-blur");
+      icons.classList.add("backdrop-blur");
+
+      effects.appendChild(make("rect", {
+        x: 0,
+        y: 0,
+        width: 1220,
+        height: 590,
+        fill: "#f8fafc",
+        opacity: 0.98
+      }));
+      effects.appendChild(make("rect", {
+        x: 58,
+        y: 38,
+        width: 1104,
+        height: 505,
+        rx: 8,
+        fill: "#ffffff",
+        stroke: "rgba(23, 32, 51, 0.14)",
+        "stroke-width": 1.5
+      }));
+
+      const title = make("text", { class: "final-title", x: 610, y: 82 });
+      title.textContent = "Event Timeline";
+      effects.appendChild(title);
+      const subtitle = make("text", { class: "final-subtitle", x: 610, y: 110 });
+      subtitle.textContent = "Washington University Orthopedics employment events and disputed terminations";
+      effects.appendChild(subtitle);
+
+      const events = [
+        { year: "1977", lines: ["Switzer begins", "long-term WashU tenure"], color: "#1d4ed8" },
+        { year: "1992", lines: ["Meadows, Johnson,", "Guerrero era begins"], color: "#b88722" },
+        { year: "2001", lines: ["Stokes and Daniel", "tenures begin"], color: "#0f766e" },
+        { year: "2018", lines: ["Ellner hired as", "Revenue Cycle Director"], color: "#7c2d12", flagged: true },
+        { year: "2019", lines: ["Daniel terminated", "after Ellner arrives"], color: "#b4232f", xmark: true },
+        { year: "2021", lines: ["Dayton transfers", "into Ortho"], color: "#831843", flagged: true },
+        { year: "2022", lines: ["Hanewinkel joins", "Ortho"], color: "#2563eb", flagged: true },
+        { year: "2022", lines: ["Wash U cleans house", "Meadows also fired"], color: "#b4232f", xmark: true },
+        { year: "2026", lines: ["Depositions confirm", "post-2022 status"], color: "#24364f" }
+      ];
+
+      const baseY = 302;
+      const startX = 104;
+      const segmentWidth = 112;
+      const segmentHeight = 44;
+      const markerXs = [];
+
+      events.forEach((event, i) => {
+        const x = startX + i * segmentWidth;
+        const color = event.color;
+        markerXs.push(x + segmentWidth / 2);
+        effects.appendChild(make("path", {
+          d: chevronPath(x, baseY - segmentHeight / 2, segmentWidth + (i === events.length - 1 ? 14 : 0), segmentHeight, i === 0, i === events.length - 1),
+          fill: color,
+          opacity: event.xmark ? 0.98 : 0.9
+        }));
+        const segYear = make("text", { class: "final-year", x: x + segmentWidth / 2, y: baseY });
+        segYear.textContent = event.year;
+        effects.appendChild(segYear);
+      });
+
+      events.forEach((event, i) => {
+        const x = markerXs[i];
+        const above = i % 2 === 0;
+        const circleY = above ? 188 : 420;
+        const labelY = above ? 142 : 460;
+        effects.appendChild(make("line", {
+          x1: x,
+          y1: above ? baseY - 22 : baseY + 22,
+          x2: x,
+          y2: circleY,
+          stroke: "rgba(23, 32, 51, 0.22)",
+          "stroke-width": 2
+        }));
+        effects.appendChild(make("circle", {
+          cx: x,
+          cy: circleY,
+          r: event.flagged ? 20 : 17,
+          fill: "#ffffff",
+          stroke: event.color,
+          "stroke-width": event.flagged ? 5 : 3.5
+        }));
+        if (event.xmark) {
+          effects.appendChild(make("line", { x1: x - 10, y1: circleY - 10, x2: x + 10, y2: circleY + 10, stroke: "#b4232f", "stroke-width": 4, "stroke-linecap": "round" }));
+          effects.appendChild(make("line", { x1: x + 10, y1: circleY - 10, x2: x - 10, y2: circleY + 10, stroke: "#b4232f", "stroke-width": 4, "stroke-linecap": "round" }));
+        } else {
+          effects.appendChild(make("circle", { cx: x, cy: circleY, r: 6, fill: event.color }));
+        }
+
+        event.lines.forEach((line, lineIndex) => {
+          const label = make("text", {
+            class: "final-label",
+            x,
+            y: labelY + lineIndex * 18
+          });
+          label.textContent = line;
+          effects.appendChild(label);
+        });
+        const note = make("text", { class: "final-note", x, y: above ? labelY + 48 : labelY + 48 });
+        note.textContent = event.xmark ? "termination event" : event.flagged ? "leadership change" : "tenure context";
+        effects.appendChild(note);
+      });
+
+      const footer = make("text", { class: "final-hint", x: 610, y: 526 });
+      footer.textContent = "Click or press Space to restart";
+      effects.appendChild(footer);
     }
 
     function employeeByName(name) {
@@ -1160,6 +1351,11 @@
       }
 
       if (ended) {
+        if (!finalTimelineShown) {
+          drawFinalTimeline();
+          playPause.textContent = "Restart / Space";
+          return;
+        }
         startTime = performance.now();
         pausedAt = null;
         ended = false;
@@ -1167,11 +1363,18 @@
         phaseIndex = 0;
         activePhase = null;
         focusLocked = false;
+        finalTimelineShown = false;
         blastStartTime = null;
         blastComplete = false;
         currentElapsed = 0;
         playing = true;
         effects.innerHTML = "";
+        svg.style.transform = "translate(0, 0)";
+        document.getElementById("yearBadge").setAttribute("opacity", "1");
+        story.classList.remove("backdrop-blur");
+        grid.classList.remove("backdrop-blur");
+        bars.classList.remove("backdrop-blur");
+        icons.classList.remove("backdrop-blur");
         renderTimelineState({ year: minYear, event: null, eventProgress: 0 });
         playPause.textContent = "Pause / Space";
         return;
@@ -1212,6 +1415,7 @@
       phaseIndex = 0;
       activePhase = null;
       focusLocked = false;
+      finalTimelineShown = false;
       blastStartTime = null;
       blastComplete = false;
       currentElapsed = 0;
@@ -1219,13 +1423,23 @@
       playing = false;
       pausedAt = performance.now();
       effects.innerHTML = "";
+      svg.style.transform = "translate(0, 0)";
+      document.getElementById("yearBadge").setAttribute("opacity", "1");
+      story.classList.remove("backdrop-blur");
+      grid.classList.remove("backdrop-blur");
+      bars.classList.remove("backdrop-blur");
+      icons.classList.remove("backdrop-blur");
       renderTimelineState({ year: minYear, event: null, eventProgress: 0 });
       playPause.textContent = "Start / Space";
     });
 
     stage.addEventListener("click", (event) => {
-      if (!activePhase) return;
       if (event.target.closest("button, select, label, input")) return;
+      if (ended) {
+        togglePlayback();
+        return;
+      }
+      if (!activePhase) return;
       continuePhase();
     });
 
