@@ -553,25 +553,26 @@
     const iconPerson = document.getElementById("iconPerson");
 
     const minYear = 1977;
-    const maxYear = 2026;
+    const maxYear = 2024;
     const focusStartYear = 2020;
-    const focusEndYear = 2022;
+    const focusEndYear = 2024;
     const plot = { left: 220, focus: 760, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
     const segments = [
       { from: 1977, to: 2019, ms: 10000 },
-      { from: 2020, to: 2022, ms: 5200 },
-      { from: 2022, to: 2026, ms: 3800 }
+      { from: 2020, to: 2021, ms: 2820 },
+      { from: 2021, to: 2022, ms: 3480 },
+      { from: 2022, to: 2024, ms: 3100 }
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
-      { year: 2018, elapsed: 8200, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
+      { year: 2018, elapsed: 9762, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
       { year: 2019, elapsed: 10000, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
       { year: 2019, elapsed: 10000, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
-      { year: 2021, elapsed: 12600, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
-      { year: 2022, elapsed: 15200, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022, elapsed: 15200, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022, elapsed: 15200, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022, elapsed: 15200, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2021, elapsed: 12820, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
+      { year: 2022, elapsed: 16300, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
+      { year: 2022, elapsed: 16300, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022, elapsed: 16300, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022, elapsed: 16300, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
@@ -599,14 +600,23 @@
     };
 
     function historyXForYear(year) {
-      if (year <= 2017) {
-        return plot.left + ((year - minYear) / (2017 - minYear)) * (plot.focus - plot.left);
+      const cappedYear = Math.min(year, maxYear);
+      if (cappedYear <= 2017) {
+        return plot.left + ((cappedYear - minYear) / (2017 - minYear)) * (plot.focus - plot.left);
       }
-      return plot.focus + ((year - 2017) / (maxYear - 2017)) * (plot.right - plot.focus);
+      return plot.focus + ((cappedYear - 2017) / (maxYear - 2017)) * (plot.right - plot.focus);
     }
 
     function focusXForYear(year) {
-      return plot.left + ((year - focusStartYear) / (focusEndYear - focusStartYear)) * (plot.right - plot.left);
+      const clampedYear = clamp(year, focusStartYear, focusEndYear);
+      const width = plot.right - plot.left;
+      if (clampedYear <= 2021) {
+        return plot.left + ((clampedYear - 2020) / 1) * width * 0.30;
+      }
+      if (clampedYear <= 2022) {
+        return plot.left + width * 0.30 + ((clampedYear - 2021) / 1) * width * 0.37;
+      }
+      return plot.left + width * 0.67 + ((clampedYear - 2022) / 2) * width * 0.33;
     }
 
     function xForYear(year) {
@@ -670,7 +680,7 @@
     }
 
     function drawGrid() {
-      const ticks = [1977, 1985, 1995, 2005, 2010, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2026];
+      const ticks = [1977, 1985, 1995, 2005, 2010, 2017, 2019, 2020, 2021, 2022, 2023, 2024];
       const bottom = plot.top + employees.length * plot.rowGap + 18;
       const originalDisplayYear = displayYear;
       displayYear = minYear;
@@ -709,18 +719,14 @@
       }
 
       displayYear = 2020;
-      const quarterTicks = [
-        { value: 2020, label: "2020 Q1" },
-        { value: 2020.25, label: "Q2" },
-        { value: 2020.5, label: "Q3" },
-        { value: 2020.75, label: "Q4" },
-        { value: 2021, label: "2021 Q1" },
-        { value: 2021.25, label: "Q2" },
-        { value: 2021.5, label: "Q3" },
-        { value: 2021.75, label: "Q4" },
-        { value: 2022, label: "2022 Q1" }
+      const focusTicks = [
+        { value: 2020, label: "2020" },
+        { value: 2021, label: "2021" },
+        { value: 2022, label: "2022" },
+        { value: 2023, label: "2023" },
+        { value: 2024, label: "2024" }
       ];
-      for (const tick of quarterTicks) {
+      for (const tick of focusTicks) {
         const x = xForYear(tick.value);
         grid.appendChild(make("line", { class: "grid focus-grid", x1: x, y1: 48, x2: x, y2: bottom, opacity: 0 }));
         const text = make("text", { class: "focus-grid", x, y: bottom + 32, "text-anchor": "middle", opacity: 0 });
@@ -1333,7 +1339,7 @@
       playing = true;
       pausedAt = null;
       currentElapsed = finishedPhase.elapsed;
-      startTime = performance.now() - currentElapsed - 20;
+      startTime = performance.now() - currentElapsed;
       playPause.textContent = "Pause / Space";
       return true;
     }
