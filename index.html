@@ -1113,11 +1113,11 @@
         rendered.push(phaseIcon(effects, emp, startX + i * spacing, isDorithaFade ? 314 : 300, scale, isDorithaFade ? 0.16 : 1));
       });
 
-      if (phase.variant === "fade-doritha" || phase.variant === "firing" || phase.variant === "vanessa-fired") {
+      if (phase.variant === "fade-doritha" || phase.variant === "firing") {
         rendered.forEach((item) => {
           if (!item) return;
           if (phase.variant === "fade-doritha" && item.label.textContent !== "Doritha Daniel") return;
-          addPhaseX(effects, item.x, item.y, phase.variant === "fade-doritha" ? 92 : phase.variant === "vanessa-fired" ? 88 : 66);
+          addPhaseX(effects, item.x, item.y, phase.variant === "fade-doritha" ? 92 : 66);
         });
       }
 
