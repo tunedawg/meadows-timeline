@@ -477,7 +477,7 @@
       { name: "Cozetta Stokes", start: 2000, end: 2022, gradient: "g3" },
       { name: "Doritha Daniel", start: 2000, end: 2019, gradient: "g4" },
       { name: "Jenifer Ellner", start: 2017, end: 2024, gradient: "g5" },
-      { name: "Kimberlee Hanewinkel", start: 2021, end: 2024, gradient: "g6" },
+      { name: "Kimberlee Hanewinkel", start: 2022, end: 2024, gradient: "g6" },
       { name: "Cody Dayton", start: 2021, end: 2024, gradient: "g7" }
     ];
 
@@ -501,12 +501,14 @@
 
     const minYear = 1977;
     const maxYear = 2024;
+    const focusStartYear = 2020;
+    const focusEndYear = 2022.75;
     const plot = { left: 220, focus: 760, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
     const segments = [
       { from: 1977, to: 2017, ms: 8200 },
       { from: 2017, to: 2019, ms: 2600 },
-      { from: 2019, to: 2021, ms: 2800 },
-      { from: 2021, to: 2022, ms: 1800 },
+      { from: 2019, to: 2021, ms: 3200 },
+      { from: 2021, to: 2022, ms: 2600 },
       { from: 2022, to: 2024, ms: 3000 }
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
@@ -514,10 +516,11 @@
       { year: 2017, elapsed: 8200, event: "jen", title: "2017: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
       { year: 2019, elapsed: 10800, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
       { year: 2019, elapsed: 10800, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
-      { year: 2021, elapsed: 13600, event: "kim-cody", title: "2021: Hanewinkel, Dayton, Ellner join Ortho", people: ["Kimberlee Hanewinkel", "Cody Dayton", "Jenifer Ellner"], variant: "omen" },
-      { year: 2022, elapsed: 15400, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022, elapsed: 15400, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggy Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022, elapsed: 15400, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2021, elapsed: 14000, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
+      { year: 2022, elapsed: 16600, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
+      { year: 2022, elapsed: 16600, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022, elapsed: 16600, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggy Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022, elapsed: 16600, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
@@ -533,6 +536,7 @@
     let blastStartTime = null;
     let blastComplete = false;
     let hasStarted = false;
+    let displayYear = minYear;
 
     const ns = "http://www.w3.org/2000/svg";
     const make = (tag, attrs = {}) => {
@@ -542,10 +546,24 @@
     };
 
     function xForYear(year) {
+      if (isFocusMode()) {
+        return plot.left + ((year - focusStartYear) / (focusEndYear - focusStartYear)) * (plot.right - plot.left);
+      }
       if (year <= 2017) {
         return plot.left + ((year - minYear) / (2017 - minYear)) * (plot.focus - plot.left);
       }
       return plot.focus + ((year - 2017) / (maxYear - 2017)) * (plot.right - plot.focus);
+    }
+
+    function isFocusMode() {
+      return displayYear >= 2019.01;
+    }
+
+    function visibleRangeForEmployee(emp) {
+      if (!isFocusMode()) return { start: emp.start, end: emp.end, visible: true };
+      const start = Math.max(emp.start, focusStartYear);
+      const end = Math.min(emp.end, focusEndYear);
+      return { start, end, visible: end >= start };
     }
 
     function timelineState(elapsed) {
@@ -592,6 +610,8 @@
     function drawGrid() {
       const ticks = [1977, 1985, 1995, 2005, 2010, 2017, 2019, 2020, 2021, 2022, 2023, 2024];
       const bottom = plot.top + employees.length * plot.rowGap + 18;
+      const originalDisplayYear = displayYear;
+      displayYear = minYear;
 
       story.appendChild(make("rect", {
         class: "era-green",
@@ -620,11 +640,35 @@
 
       for (const year of ticks) {
         const x = xForYear(year);
-        grid.appendChild(make("line", { class: "grid", x1: x, y1: 48, x2: x, y2: bottom }));
-        const text = make("text", { x, y: bottom + 32, "text-anchor": "middle" });
+        grid.appendChild(make("line", { class: "grid history-grid", x1: x, y1: 48, x2: x, y2: bottom }));
+        const text = make("text", { class: "history-grid", x, y: bottom + 32, "text-anchor": "middle" });
         text.textContent = year;
         grid.appendChild(text);
       }
+
+      displayYear = 2020;
+      const quarterTicks = [
+        { value: 2020, label: "2020 Q1" },
+        { value: 2020.25, label: "Q2" },
+        { value: 2020.5, label: "Q3" },
+        { value: 2020.75, label: "Q4" },
+        { value: 2021, label: "2021 Q1" },
+        { value: 2021.25, label: "Q2" },
+        { value: 2021.5, label: "Q3" },
+        { value: 2021.75, label: "Q4" },
+        { value: 2022, label: "2022 Q1" },
+        { value: 2022.25, label: "Q2" },
+        { value: 2022.5, label: "Q3" },
+        { value: 2022.75, label: "Q4" }
+      ];
+      for (const tick of quarterTicks) {
+        const x = xForYear(tick.value);
+        grid.appendChild(make("line", { class: "grid focus-grid", x1: x, y1: 48, x2: x, y2: bottom, opacity: 0 }));
+        const text = make("text", { class: "focus-grid", x, y: bottom + 32, "text-anchor": "middle", opacity: 0 });
+        text.textContent = tick.label;
+        grid.appendChild(text);
+      }
+      displayYear = originalDisplayYear;
 
       const axis = make("line", { x1: plot.left, y1: bottom, x2: plot.right, y2: bottom, stroke: "rgba(36,48,67,.35)", "stroke-width": 1.5 });
       grid.appendChild(axis);
@@ -997,21 +1041,26 @@
 
     function renderTimelineState(state) {
       const currentYear = state.year;
+      displayYear = currentYear;
       yearText.textContent = Math.floor(currentYear).toString();
       drawBurst(state.event, state.eventProgress);
 
       const bottom = plot.top + employees.length * plot.rowGap + 18;
       const nowLine = document.getElementById("nowLine");
-      nowLine.setAttribute("x1", xForYear(currentYear));
-      nowLine.setAttribute("x2", xForYear(currentYear));
+      const nowX = xForYear(clamp(currentYear, isFocusMode() ? focusStartYear : minYear, isFocusMode() ? focusEndYear : maxYear));
+      nowLine.setAttribute("x1", nowX);
+      nowLine.setAttribute("x2", nowX);
       nowLine.setAttribute("y2", bottom);
+      grid.querySelectorAll(".history-grid").forEach((node) => node.setAttribute("opacity", isFocusMode() ? 0 : 1));
+      grid.querySelectorAll(".focus-grid").forEach((node) => node.setAttribute("opacity", isFocusMode() ? 1 : 0));
 
       employees.forEach((emp, i) => {
         const rowY = plot.top + i * plot.rowGap;
-        const startX = xForYear(emp.start);
-        const endX = xForYear(emp.end);
+        const range = visibleRangeForEmployee(emp);
+        const startX = range.visible ? xForYear(range.start) : xForYear(focusStartYear);
+        const endX = range.visible ? xForYear(range.end) : startX;
         const progress = clamp((currentYear - emp.start) / (emp.end - emp.start), 0, 1);
-        const activeYear = clamp(currentYear, emp.start, emp.end);
+        const activeYear = clamp(currentYear, Math.max(emp.start, isFocusMode() ? focusStartYear : minYear), Math.min(emp.end, isFocusMode() ? focusEndYear : maxYear));
         const x = xForYear(activeYear);
         const isKeeper = emp.name === "Jenifer Ellner" || emp.name === "Kimberlee Hanewinkel" || emp.name === "Cody Dayton";
         const isDoritha = emp.name === "Doritha Daniel";
@@ -1030,8 +1079,13 @@
         const duration = bars.querySelector(`.duration[data-index="${i}"]`);
         const mark = icons.querySelector(`.timeline-x[data-index="${i}"]`);
 
-        const visibleWidth = Math.max(0, x - startX);
+        const trackWidth = Math.max(0, endX - startX);
+        const visibleWidth = range.visible ? Math.max(0, Math.min(x, endX) - startX) : 0;
+        track.setAttribute("x", startX);
+        track.setAttribute("width", trackWidth);
+        bar.setAttribute("x", startX);
         bar.setAttribute("width", visibleWidth);
+        label.setAttribute("x", startX + 12);
         icon.setAttribute("transform", `translate(${x + exitDrift} ${rowY + exitLift}) scale(${1 - 0.22 * exitProgress})`);
         icon.setAttribute("opacity", exitOpacity);
         bar.setAttribute("opacity", exitOpacity);
