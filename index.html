@@ -932,9 +932,10 @@
       bkEl.textContent = "scale break";
       effects.appendChild(bkEl);
 
-      const renderEvent = ({ x, above, year, name, sub, color, featured }) => {
+      // cl = custom connector length; overrides the default 54 (small) / 72 (featured)
+      const renderEvent = ({ x, above, year, name, sub, sub2, color, featured, cl }) => {
         const dotR = featured ? 9 : 6;
-        const connLen = featured ? 72 : 54;
+        const connLen = cl !== undefined ? cl : (featured ? 72 : 54);
         const sign = above ? -1 : 1;
         const connY2 = spineY + sign * connLen;
 
@@ -963,51 +964,59 @@
         nameEl.textContent = name;
         effects.appendChild(nameEl);
 
+        let nextY = above ? nameY - 16 : nameY + 17;
         if (sub) {
-          const subY = above ? nameY - 16 : nameY + 17;
           const subEl = make("text", {
-            x, y: subY, "text-anchor": "middle",
+            x, y: nextY, "text-anchor": "middle",
             fill: "#5d6677", "font-size": 11, "font-weight": 700, "font-family": F
           });
           subEl.textContent = sub;
           effects.appendChild(subEl);
+          nextY = above ? nextY - 15 : nextY + 15;
+        }
+        if (sub2) {
+          const sub2El = make("text", {
+            x, y: nextY, "text-anchor": "middle",
+            fill: "#4338ca", "font-size": 10.5, "font-weight": 700, "font-family": F, "font-style": "italic"
+          });
+          sub2El.textContent = sub2;
+          effects.appendChild(sub2El);
         }
       };
 
-      // Above spine: hires and joins
+      // Above spine: hires and joins — cl staggers heights to prevent label overlap
       [
-        { yr: 1977,    year: "1977",     name: "Patricia Switzer",   sub: "hired",            color: "#1e40af" },
-        { yr: 1992,    year: "1992",     name: "Guerrero & Johnson", sub: "hired",            color: "#0f766e" },
-        { yr: 1999,    year: "1999",     name: "Vanessa Meadows",    sub: "hired",            color: "#d97706", featured: true },
-        { yr: 2018,    year: "2018",     name: "Jenifer Ellner",     sub: "becomes director", color: "#dc2626" },
-        { yr: 2021,    year: "2021",     name: "Cody Dayton",        sub: "joins",            color: "#57534e" },
-        { yr: 2022,    year: "2022",     name: "K. Hanewinkel",      sub: "joins",            color: "#7f1d1d" },
-        { yr: 2022.83, year: "Nov 2022", name: "Kortnie Sronce",     sub: "hired",            color: "#334155", featured: true },
+        { yr: 1977,    year: "1977",     name: "Patricia Switzer",   sub: "hired",            color: "#1e40af",               cl: 50  },
+        { yr: 1992,    year: "1992",     name: "Guerrero & Johnson", sub: "hired",            color: "#0f766e",               cl: 86  },
+        { yr: 1999,    year: "1999",     name: "Vanessa Meadows",    sub: "hired",            color: "#d97706", featured: true, cl: 122 },
+        { yr: 2018,    year: "2018",     name: "Jenifer Ellner",     sub: "becomes director", color: "#dc2626",               cl: 54  },
+        { yr: 2021,    year: "2021",     name: "Cody Dayton",        sub: "joins",            color: "#57534e",               cl: 38  },
+        { yr: 2022,    year: "2022",     name: "K. Hanewinkel",      sub: "joins",            color: "#7f1d1d",               cl: 90  },
+        { yr: 2022.83, year: "Nov 2022", name: "Kortnie Sronce",     sub: "hired",            color: "#334155", featured: true, cl: 54,
+          sub2: "5 months after Meadows' firing" },
       ].forEach(ev => renderEvent({ x: fx(ev.yr), above: true, ...ev }));
 
       // Below spine: hires and terminations
       [
-        { yr: 2001,    year: "2001",     name: "Stokes & Daniel",  sub: "hired",                    color: "#0369a1" },
-        { yr: 2019.22, year: "Apr 2019", name: "Doritha Daniel",   sub: "terminated by Ellner",     color: "#dc2626" },
-        { yr: 2022.46, year: "Jun 2022", name: "Vanessa Meadows",  sub: "+ four others terminated", color: "#991b1b", featured: true },
+        { yr: 2001,    year: "2001",     name: "Stokes & Daniel",  sub: "hired",                    color: "#0369a1",               cl: 54 },
+        { yr: 2019.22, year: "Apr 2019", name: "Doritha Daniel",   sub: "terminated by Ellner",     color: "#dc2626",               cl: 44 },
+        { yr: 2022.46, year: "Jun 2022", name: "Vanessa Meadows",  sub: "+ four others terminated", color: "#991b1b", featured: true, cl: 80 },
       ].forEach(ev => renderEvent({ x: fx(ev.yr), above: false, ...ev }));
 
-      // 5-month gap annotation between Jun 2022 termination and Sronce hire
+      // 5-month gap: accent highlight directly on the spine between the two events
       const xFired = fx(2022.46);
       const xSronce = fx(2022.83);
-      const annotY = spineY - 22;
       effects.appendChild(make("line", {
-        x1: xFired + 4, y1: annotY, x2: xSronce - 6, y2: annotY,
-        stroke: "#6366f1", "stroke-width": 1.8, "stroke-dasharray": "5 3",
-        "stroke-linecap": "round", opacity: 0.9
+        x1: xFired, y1: spineY, x2: xSronce, y2: spineY,
+        stroke: "#6366f1", "stroke-width": 5, "stroke-linecap": "round", opacity: 0.88
       }));
-      effects.appendChild(make("line", { x1: xFired + 4, y1: annotY - 5, x2: xFired + 4, y2: annotY + 5, stroke: "#6366f1", "stroke-width": 1.8, "stroke-linecap": "round" }));
-      effects.appendChild(make("line", { x1: xSronce - 6, y1: annotY - 5, x2: xSronce - 6, y2: annotY + 5, stroke: "#6366f1", "stroke-width": 1.8, "stroke-linecap": "round" }));
+      effects.appendChild(make("line", { x1: xFired, y1: spineY - 9, x2: xFired, y2: spineY + 9, stroke: "#6366f1", "stroke-width": 2.5, "stroke-linecap": "round" }));
+      effects.appendChild(make("line", { x1: xSronce, y1: spineY - 9, x2: xSronce, y2: spineY + 9, stroke: "#6366f1", "stroke-width": 2.5, "stroke-linecap": "round" }));
       const gapEl = make("text", {
-        x: (xFired + xSronce) / 2, y: annotY - 9, "text-anchor": "middle",
-        fill: "#4338ca", "font-size": 11.5, "font-weight": 800, "font-family": F
+        x: (xFired + xSronce) / 2, y: spineY + 24, "text-anchor": "middle",
+        fill: "#4338ca", "font-size": 11, "font-weight": 800, "font-family": F, "font-style": "italic"
       });
-      gapEl.textContent = "5-month gap";
+      gapEl.textContent = "5 months";
       effects.appendChild(gapEl);
 
       const hint = make("text", { class: "final-hint", x: 610, y: 618 });
