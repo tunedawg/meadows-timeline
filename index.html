@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Employee Tenure Timeline</title>
+  <title>Meadows v. Washington University — Employee Tenure Timeline</title>
   <style>
     :root {
       --ink: #172033;
@@ -23,7 +23,7 @@
       min-height: 100vh;
       color: var(--ink);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #e9edf3;
+      background: #eef1f6;
       overflow-x: hidden;
     }
 
@@ -66,7 +66,7 @@
     }
 
     .stage:fullscreen svg {
-      width: min(99vw, calc((100vh - 48px) * 2.0678));
+      width: min(99vw, calc((100vh - 48px) * 1.9063));
       max-width: 99vw;
       max-height: calc(100vh - 48px);
     }
@@ -205,15 +205,15 @@
     }
 
     .era-green {
-      fill: rgba(4, 120, 87, 0.08);
+      fill: rgba(4, 120, 87, 0.03);
     }
 
     .era-yellow {
-      fill: rgba(217, 119, 6, 0.12);
+      fill: rgba(217, 119, 6, 0.04);
     }
 
     .era-red {
-      fill: rgba(180, 35, 47, 0.09);
+      fill: rgba(180, 35, 47, 0.03);
     }
 
     .now-line {
@@ -224,14 +224,14 @@
     }
 
     .year-pill {
-      fill: #243043;
-      filter: drop-shadow(0 16px 26px rgba(36, 48, 67, 0.22));
+      fill: #1e293b;
+      filter: drop-shadow(0 4px 14px rgba(18, 24, 38, 0.14));
     }
 
     .year-text {
       fill: #ffffff;
-      font-size: 32px;
-      font-weight: 900;
+      font-size: 26px;
+      font-weight: 800;
       text-anchor: middle;
       dominant-baseline: middle;
       letter-spacing: 0;
@@ -263,7 +263,7 @@
     }
 
     .keeper-glow {
-      filter: drop-shadow(0 0 8px rgba(184, 135, 34, 0.36));
+      filter: none;
     }
 
     .meadows-halo {
@@ -395,45 +395,39 @@
     }
 
     .phase-veil {
-      fill: rgba(12, 18, 30, 0.78);
-      backdrop-filter: blur(10px);
+      fill: rgba(248, 250, 252, 0.95);
     }
 
     .phase-title {
       font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-      fill: #ffffff;
-      font-size: 44px;
+      fill: #172033;
+      font-size: 38px;
       font-weight: 900;
       text-anchor: middle;
       dominant-baseline: middle;
-      paint-order: stroke fill;
-      stroke: rgba(12, 18, 30, 0.42);
-      stroke-width: 5;
+      letter-spacing: -0.3px;
     }
 
     .phase-title.long {
-      font-size: 34px;
+      font-size: 30px;
     }
 
     .phase-hint {
       font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-      fill: rgba(255, 253, 247, 0.76);
-      font-size: 20px;
-      font-weight: 800;
+      fill: rgba(23, 32, 51, 0.52);
+      font-size: 16px;
+      font-weight: 700;
       text-anchor: middle;
       dominant-baseline: middle;
     }
 
     .phase-card-name {
       font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-      fill: #fffdf7;
-      font-size: 24px;
-      font-weight: 900;
+      fill: #172033;
+      font-size: 20px;
+      font-weight: 800;
       text-anchor: middle;
       dominant-baseline: middle;
-      paint-order: stroke fill;
-      stroke: rgba(18, 14, 24, 0.55);
-      stroke-width: 4;
     }
 
     .backdrop-blur {
@@ -448,11 +442,11 @@
     }
 
     .timeline-x line {
-      stroke-width: 6;
+      stroke-width: 3.5;
     }
 
     .phase-x line {
-      stroke-width: 18;
+      stroke-width: 9;
     }
 
     @media (max-width: 860px) {
@@ -474,11 +468,6 @@
           <button id="restart" type="button">Restart</button>
           <button id="fullscreenBtn" type="button">Fullscreen</button>
           <button id="hideControlsBtn" type="button">Hide Controls</button>
-          <select id="frameStyle" aria-label="Icon frame style">
-            <option value="circle">Circle frame</option>
-            <option value="scallop">Scallop frame</option>
-            <option value="diamond">Diamond frame</option>
-          </select>
           <select id="iconPerson" aria-label="Select person for icon upload">
             <option value="Vanessa Meadows">Vanessa Meadows</option>
             <option value="Patricia Switzer">Patricia Switzer</option>
@@ -489,6 +478,7 @@
             <option value="Jenifer Ellner">Jenifer Ellner</option>
             <option value="Kimberlee Hanewinkel">Kimberlee Hanewinkel</option>
             <option value="Cody Dayton">Cody Dayton</option>
+            <option value="Kortnie Sronce">Kortnie Sronce</option>
           </select>
           <label class="upload">
             Upload selected icon
@@ -499,9 +489,9 @@
       </header>
 
       <div class="chart-wrap">
-        <svg id="chart" viewBox="0 0 1220 590" role="img" aria-labelledby="chartTitle chartDesc">
+        <svg id="chart" viewBox="0 0 1220 640" role="img" aria-labelledby="chartTitle chartDesc">
           <title id="chartTitle">Animated employee tenure timeline</title>
-          <desc id="chartDesc">Horizontal bars show employee tenure from 1977 through 2024, with moving icons synchronized to time.</desc>
+          <desc id="chartDesc">Horizontal bars show employee tenure from 1977 through 2024, animated to illustrate the departure of five long-tenure employees in 2022 following Vanessa Meadows' wrongful termination.</desc>
           <defs>
             <clipPath id="softClip"><rect x="0" y="0" width="1220" height="590" rx="18"/></clipPath>
             <clipPath id="iconCircleClip" clipPathUnits="userSpaceOnUse">
@@ -510,23 +500,28 @@
             <clipPath id="iconFeatureCircleClip" clipPathUnits="userSpaceOnUse">
               <circle cx="0" cy="0" r="36"/>
             </clipPath>
-            <linearGradient id="g0" x1="0" x2="1"><stop stop-color="#1d4ed8"/><stop offset="1" stop-color="#0891b2"/></linearGradient>
-            <linearGradient id="g1" x1="0" x2="1"><stop stop-color="#047857"/><stop offset="1" stop-color="#0f766e"/></linearGradient>
-            <linearGradient id="g2" x1="0" x2="1"><stop stop-color="#7c2d12"/><stop offset="1" stop-color="#be123c"/></linearGradient>
-            <linearGradient id="g3" x1="0" x2="1"><stop stop-color="#5b21b6"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient>
-            <linearGradient id="g4" x1="0" x2="1"><stop stop-color="#0f766e"/><stop offset="1" stop-color="#155e75"/></linearGradient>
-            <linearGradient id="g5" x1="0" x2="1"><stop stop-color="#92400e"/><stop offset="1" stop-color="#d97706"/></linearGradient>
-            <linearGradient id="g6" x1="0" x2="1"><stop stop-color="#0f172a"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
-            <linearGradient id="g7" x1="0" x2="1"><stop stop-color="#831843"/><stop offset="1" stop-color="#b91c1c"/></linearGradient>
+            <!-- loyal long-tenure employees: blues and teals -->
+            <linearGradient id="g0" x1="0" x2="1"><stop stop-color="#1e40af"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+            <linearGradient id="g1" x1="0" x2="1"><stop stop-color="#0f766e"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+            <linearGradient id="g2" x1="0" x2="1"><stop stop-color="#1d4ed8"/><stop offset="1" stop-color="#818cf8"/></linearGradient>
+            <linearGradient id="g3" x1="0" x2="1"><stop stop-color="#0369a1"/><stop offset="1" stop-color="#38bdf8"/></linearGradient>
+            <linearGradient id="g4" x1="0" x2="1"><stop stop-color="#115e59"/><stop offset="1" stop-color="#0d9488"/></linearGradient>
+            <!-- antagonists: reds and dark slate -->
+            <linearGradient id="g5" x1="0" x2="1"><stop stop-color="#991b1b"/><stop offset="1" stop-color="#dc2626"/></linearGradient>
+            <linearGradient id="g6" x1="0" x2="1"><stop stop-color="#7f1d1d"/><stop offset="1" stop-color="#b91c1c"/></linearGradient>
+            <linearGradient id="g7" x1="0" x2="1"><stop stop-color="#292524"/><stop offset="1" stop-color="#78716c"/></linearGradient>
+            <!-- Vanessa: gold -->
             <linearGradient id="g8" x1="0" x2="1"><stop stop-color="#b45309"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+            <!-- Kortnie Sronce: slate blue-gray -->
+            <linearGradient id="g9" x1="0" x2="1"><stop stop-color="#334155"/><stop offset="1" stop-color="#94a3b8"/></linearGradient>
           </defs>
           <g id="story"></g>
           <g id="grid" class="axis"></g>
           <g id="bars"></g>
           <g id="icons"></g>
           <g id="yearBadge">
-            <rect class="year-pill" x="30" y="486" width="184" height="62" rx="16"/>
-            <text class="year-text" id="yearText" x="122" y="517">1977</text>
+            <rect class="year-pill" x="30" y="544" width="148" height="44" rx="10"/>
+            <text class="year-text" id="yearText" x="104" y="566">1977</text>
           </g>
           <g id="effects"></g>
         </svg>
@@ -536,7 +531,7 @@
 
   <script>
     const employees = [
-      { name: "Vanessa Meadows", start: 1992, end: 2022, exitYear: 2022.9, gradient: "g8", featured: true },
+      { name: "Vanessa Meadows", start: 1999, end: 2022, exitYear: 2022.9, gradient: "g8", featured: true },
       { name: "Patricia Switzer", start: 1977, end: 2022, exitYear: 2022.08, gradient: "g0" },
       { name: "Peggyann Guerrero", start: 1992, end: 2022, exitYear: 2022.75, gradient: "g1" },
       { name: "April Johnson", start: 1992, end: 2022, exitYear: 2022.87, gradient: "g2" },
@@ -544,7 +539,8 @@
       { name: "Doritha Daniel", start: 2001, end: 2019, exitYear: 2019.22, gradient: "g4" },
       { name: "Jenifer Ellner", start: 2018, end: 2026, gradient: "g5" },
       { name: "Kimberlee Hanewinkel", start: 2022, end: 2026, gradient: "g6" },
-      { name: "Cody Dayton", start: 2021, end: 2026, gradient: "g7" }
+      { name: "Cody Dayton", start: 2021, end: 2026, gradient: "g7" },
+      { name: "Kortnie Sronce", start: 2022.83, end: 2024, gradient: "g9" }
     ];
 
     const stage = document.querySelector(".stage");
@@ -562,37 +558,37 @@
     const showControlsBtn = document.getElementById("showControlsBtn");
     const controls = document.querySelector(".controls");
     const upload = document.getElementById("iconUpload");
-    const frameStyle = document.getElementById("frameStyle");
     const iconPerson = document.getElementById("iconPerson");
 
     const minYear = 1977;
     const maxYear = 2024;
     const focusStartYear = 2020;
     const focusEndYear = 2024;
-    const plot = { left: 220, focus: 760, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
+    const plot = { left: 220, right: 1160, top: 62, rowGap: 48, barHeight: 19 };
     const segments = [
-      { from: 1977, to: 2018, ms: 14930 },
-      { from: 2018, to: 2019, ms: 3200 },
-      { from: 2020, to: 2021, ms: 3760 },
-      { from: 2021, to: 2022, ms: 5170 },
-      { from: 2022, to: 2023, ms: 4300 },
-      { from: 2023, to: 2024, ms: 4230 }
+      { from: 1977, to: 1999, ms: 5000 },   // cumulative:  5000  (227ms/yr)
+      { from: 1999, to: 2018, ms: 7500 },   // cumulative: 12500  (395ms/yr — 1.7× slower, smooth)
+      { from: 2018, to: 2019, ms: 1800 },   // cumulative: 14300  (pause follows at 2018)
+      { from: 2019, to: 2021, ms: 3600 },   // cumulative: 17900  (1800ms/yr — same rate)
+      { from: 2021, to: 2022, ms: 2400 },   // cumulative: 20300  (2400ms/yr — gradual decel)
+      { from: 2022, to: 2023, ms: 4500 },   // cumulative: 24800  (4500ms/yr — final act)
+      { from: 2023, to: 2024, ms: 4000 }    // cumulative: 28800  (4000ms/yr — nearly same)
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
-      { year: 2018, elapsed: 14930, event: "jen", title: "2018: Jenifer Ellner Joins Wash U", people: ["Jenifer Ellner"], variant: "omen" },
-      { year: 2019, elapsed: 18130, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
-      { year: 2019, elapsed: 18130, title: "2019: Ellner fires Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
-      { year: 2021, elapsed: 21890, event: "kim-cody", title: "2021: Cody Dayton joins Ortho", people: ["Cody Dayton"], variant: "omen" },
-      { year: 2022, elapsed: 27060, event: "kim-cody", title: "2022: Kimberlee Hanewinkel joins Ortho", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022.98, elapsed: 31274, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022.98, elapsed: 31274, title: "2022: Wash U cleans house", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022.98, elapsed: 31274, title: ["2022: Wash U fires Vanessa Meadows", "because of her race, age,", "and disability."], people: ["Vanessa Meadows"], variant: "vanessa-fired" }
+      { year: 2018, elapsed: 12500, event: "jen", title: "2018: Jenifer Ellner Becomes Revenue Cycle Director", people: ["Jenifer Ellner"], variant: "omen" },
+      { year: 2019, elapsed: 14300, title: "2019", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "center" },
+      { year: 2019, elapsed: 14300, title: "2019: Ellner Terminates Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
+      { year: 2021, elapsed: 17900, event: "kim-cody", title: "2021: Cody Dayton Joins Orthopedics", people: ["Cody Dayton"], variant: "omen" },
+      { year: 2022, elapsed: 20300, event: "kim-cody", title: "2022: Kimberlee Hanewinkel Joins Orthopedics", people: ["Kimberlee Hanewinkel"], variant: "omen" },
+      { year: 2022.98, elapsed: 24710, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022.98, elapsed: 24710, title: "June–July 2022: Five Long-Tenure Employees Depart", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022.98, elapsed: 24710, title: ["June 17, 2022: Washington University", "terminates Vanessa Meadows", "after 23 years of service."], people: ["Vanessa Meadows"], variant: "vanessa-fired" },
+      { year: 2022.98, elapsed: 24710, title: ["November 2022: Kortnie Sronce Joins Orthopedics", "Five months after Vanessa Meadows' termination."], people: ["Kortnie Sronce"], variant: "omen" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
-    const frameStorageKey = "employee-tenure-timeline-frame-v1";
-    let iconFrameStyle = "circle";
+    const iconFrameStyle = "circle";
     let playing = false;
     let startTime = performance.now();
     let pausedAt = performance.now();
@@ -616,10 +612,7 @@
 
     function historyXForYear(year) {
       const cappedYear = Math.min(year, maxYear);
-      if (cappedYear <= 2017) {
-        return plot.left + ((cappedYear - minYear) / (2017 - minYear)) * (plot.focus - plot.left);
-      }
-      return plot.focus + ((cappedYear - 2017) / (maxYear - 2017)) * (plot.right - plot.focus);
+      return plot.left + ((cappedYear - minYear) / (maxYear - minYear)) * (plot.right - plot.left);
     }
 
     function focusXForYear(year) {
@@ -691,11 +684,6 @@
           delete savedIcons["Peggy Guerrero"];
         }
         Object.assign(iconDataUrls, savedIcons);
-        const savedFrame = localStorage.getItem(frameStorageKey);
-        if (savedFrame) {
-          iconFrameStyle = savedFrame;
-          frameStyle.value = savedFrame;
-        }
       } catch {
         localStorage.removeItem(storageKey);
       }
@@ -704,42 +692,16 @@
     function persistIcons() {
       try {
         localStorage.setItem(storageKey, JSON.stringify(iconDataUrls));
-        localStorage.setItem(frameStorageKey, iconFrameStyle);
       } catch {
         alert("This browser could not save all icons locally. Try smaller image files, or use committed image assets for a hosted version.");
       }
     }
 
     function drawGrid() {
-      const ticks = [1977, 1985, 1995, 2005, 2010, 2017, 2019, 2020, 2021, 2022, 2023, 2024];
+      const ticks = [1977, 1999, 2018, 2022, 2024];
       const bottom = plot.top + employees.length * plot.rowGap + 18;
       const originalDisplayYear = displayYear;
       displayYear = minYear;
-
-      story.appendChild(make("rect", {
-        class: "era-green",
-        x: plot.left,
-        y: 42,
-        width: xForYear(2017) - plot.left,
-        height: bottom - 42,
-        rx: 18
-      }));
-      story.appendChild(make("rect", {
-        class: "era-yellow",
-        x: xForYear(2017),
-        y: 42,
-        width: xForYear(2022) - xForYear(2017),
-        height: bottom - 42,
-        rx: 18
-      }));
-      story.appendChild(make("rect", {
-        class: "era-red",
-        x: xForYear(2022),
-        y: 42,
-        width: xForYear(2024) - xForYear(2022),
-        height: bottom - 42,
-        rx: 18
-      }));
 
       for (const year of ticks) {
         const x = xForYear(year);
@@ -754,10 +716,7 @@
         { value: 2020, label: "2020" },
         { value: 2021, label: "2021" },
         { value: 2022, label: "2022" },
-        { value: 2022.08, label: "Jan" },
-        { value: 2022.38, label: "May" },
-        { value: 2022.75, label: "Sep" },
-        { value: 2022.87, label: "Nov" },
+        { value: 2022.5, label: "Jun '22" },
         { value: 2023, label: "2023" },
         { value: 2024, label: "2024" }
       ];
@@ -772,15 +731,6 @@
 
       const axis = make("line", { x1: plot.left, y1: bottom, x2: plot.right, y2: bottom, stroke: "rgba(36,48,67,.35)", "stroke-width": 1.5 });
       grid.appendChild(axis);
-
-      const breakMark = make("path", {
-        d: `M ${xForYear(2017) - 10} ${bottom - 8} l 8 16 M ${xForYear(2017) + 2} ${bottom - 8} l 8 16`,
-        stroke: "rgba(36,48,67,.42)",
-        "stroke-width": 2,
-        fill: "none",
-        "stroke-linecap": "round"
-      });
-      grid.appendChild(breakMark);
 
       const nowLine = make("line", { id: "nowLine", class: "now-line", x1: plot.left, y1: 46, x2: plot.left, y2: bottom });
       story.appendChild(nowLine);
@@ -857,7 +807,7 @@
         x: 0,
         y: 0,
         width: 1220,
-        height: 590,
+        height: 640,
         fill: "#b4232f",
         opacity: screenOpacity
       }));
@@ -933,111 +883,136 @@
       bars.classList.add("backdrop-blur");
       icons.classList.add("backdrop-blur");
 
-      effects.appendChild(make("rect", {
-        x: 0,
-        y: 0,
-        width: 1220,
-        height: 590,
-        fill: "#f8fafc",
-        opacity: 0.98
-      }));
-      effects.appendChild(make("rect", {
-        x: 58,
-        y: 38,
-        width: 1104,
-        height: 505,
-        rx: 8,
-        fill: "#ffffff",
-        stroke: "rgba(23, 32, 51, 0.14)",
-        "stroke-width": 1.5
-      }));
+      const F = "Inter, ui-sans-serif, system-ui, sans-serif";
+      const spineY = 330;
+      const x0 = 78, x1 = 1142;
+      const xBreakL = 540, xBreakR = 600;
 
-      const title = make("text", { class: "final-title", x: 610, y: 82 });
-      title.textContent = "Event Timeline";
-      effects.appendChild(title);
-      const subtitle = make("text", { class: "final-subtitle", x: 610, y: 110 });
-      subtitle.textContent = "Washington University Orthopedics employment events and disputed terminations";
-      effects.appendChild(subtitle);
+      // Two-section proportional scale: 1977–2018 compressed left, 2018–2023 expanded right
+      const fx = yr => yr < 2018
+        ? x0 + (yr - 1977) / (2018 - 1977) * (xBreakL - x0)
+        : xBreakR + (yr - 2018) / (2023 - 2018) * (x1 - xBreakR);
 
-      function addTextLines(group, lines, x, y, lineHeight, attrs = {}) {
-        lines.forEach((line, index) => {
-          const text = make("text", { x, y: y + index * lineHeight, ...attrs });
-          text.textContent = line;
-          group.appendChild(text);
-        });
-      }
+      effects.appendChild(make("rect", { x: 0, y: 0, width: 1220, height: 640, fill: "#f8fafc", opacity: 0.98 }));
 
-      const table = { x: 92, y: 142, width: 1036, header: 38, row: 46 };
-      const columns = { date: 116, event: 350, detail: 570 };
-      effects.appendChild(make("rect", {
-        x: table.x,
-        y: table.y,
-        width: table.width,
-        height: table.header + table.row * 8,
-        rx: 6,
-        fill: "#ffffff",
-        stroke: "rgba(23, 32, 51, 0.16)",
-        "stroke-width": 1.4
+      const titleEl = make("text", { class: "final-title", x: 610, y: 56 });
+      titleEl.textContent = "Meadows v. Washington University";
+      effects.appendChild(titleEl);
+      const subtitleEl = make("text", { class: "final-subtitle", x: 610, y: 84 });
+      subtitleEl.textContent = "Employment timeline — Orthopedic Surgery department";
+      effects.appendChild(subtitleEl);
+
+      // Left spine segment
+      effects.appendChild(make("line", {
+        x1: x0, y1: spineY, x2: xBreakL, y2: spineY,
+        stroke: "#24364f", "stroke-width": 3.5, "stroke-linecap": "round", opacity: 0.80
       }));
-      effects.appendChild(make("rect", {
-        x: table.x,
-        y: table.y,
-        width: table.width,
-        height: table.header,
-        rx: 6,
-        fill: "#24364f"
+      // Right spine segment
+      effects.appendChild(make("line", {
+        x1: xBreakR, y1: spineY, x2: x1, y2: spineY,
+        stroke: "#24364f", "stroke-width": 3.5, "stroke-linecap": "round", opacity: 0.80
       }));
-      effects.appendChild(make("rect", {
-        x: table.x,
-        y: table.y + 24,
-        width: table.width,
-        height: 14,
-        fill: "#24364f"
+      // Arrowhead
+      effects.appendChild(make("path", {
+        d: `M ${x1} ${spineY} L ${x1 - 11} ${spineY - 7} M ${x1} ${spineY} L ${x1 - 11} ${spineY + 7}`,
+        stroke: "#24364f", "stroke-width": 3.5, "stroke-linecap": "round", fill: "none", opacity: 0.80
       }));
 
-      ["Date", "Event", "Why It Matters"].forEach((label, index) => {
-        const x = index === 0 ? table.x + 22 : index === 1 ? table.x + columns.date + 22 : table.x + columns.date + columns.event + 22;
-        const text = make("text", { x, y: table.y + 25, fill: "#ffffff", "font-size": 13, "font-weight": 900, "font-family": "Inter, ui-sans-serif, system-ui, sans-serif" });
-        text.textContent = label;
-        effects.appendChild(text);
-      });
-
-      const rows = [
-        { date: "1977", event: ["Patricia Switzer begins", "long-term WashU employment"], detail: ["Earliest tenure shown; 44+ years of employment."], tone: "#1d4ed8" },
-        { date: "1992", event: ["Vanessa Meadows, April Johnson,", "and Peggyann Guerrero begin era"], detail: ["Long-tenure employees later affected within months in 2022."], tone: "#b88722" },
-        { date: "2001", event: ["Cozetta Stokes and", "Doritha Daniel begin tenures"], detail: ["Additional long-tenure employees in the department."], tone: "#0f766e" },
-        { date: "2018", event: ["Jenifer Ellner hired", "as Revenue Cycle Director"], detail: ["Leadership change precedes disputed terminations."], tone: "#92400e" },
-        { date: "2019", event: ["Doritha Daniel terminated"], detail: ["First termination after Ellner arrives."], tone: "#b4232f", alert: true },
-        { date: "2021-2022", event: ["Cody Dayton transfers into Ortho;", "Kimberlee Hanewinkel joins Ortho"], detail: ["New personnel arrive before the 2022 departures."], tone: "#2563eb" },
-        { date: "2022", event: ["Compressed departure sequence"], detail: ["After decades of tenure, five departures occur within the same year:", "Jan. Switzer; May Stokes; Sep. Guerrero; Nov./late 2022 Johnson and Meadows."], tone: "#b4232f", alert: true },
-        { date: "After 2022", event: ["Ellner, Hanewinkel,", "and Dayton remain employed"], detail: ["Contrast with the long-tenure employees who left within months."], tone: "#24364f" }
-      ];
-
-      rows.forEach((row, index) => {
-        const y = table.y + table.header + index * table.row;
-        effects.appendChild(make("rect", {
-          x: table.x,
-          y,
-          width: table.width,
-          height: table.row,
-          fill: row.alert ? "rgba(180, 35, 47, 0.055)" : index % 2 ? "#ffffff" : "#f8fafc"
-        }));
-        effects.appendChild(make("rect", { x: table.x, y, width: 7, height: table.row, fill: row.tone }));
+      // Scale break: two diagonal slashes in the gap
+      [[xBreakL + 5, xBreakL + 14], [xBreakR - 14, xBreakR - 5]].forEach(([xa, xb]) => {
         effects.appendChild(make("line", {
-          x1: table.x,
-          y1: y + table.row,
-          x2: table.x + table.width,
-          y2: y + table.row,
-          stroke: "rgba(23, 32, 51, 0.10)",
-          "stroke-width": 1
+          x1: xa, y1: spineY + 13, x2: xb, y2: spineY - 13,
+          stroke: "#8896a9", "stroke-width": 2, "stroke-linecap": "round"
         }));
-        const dateText = make("text", { class: "final-card-date", x: table.x + 22, y: y + 28 });
-        dateText.textContent = row.date;
-        effects.appendChild(dateText);
-        addTextLines(effects, row.event, table.x + columns.date + 22, y + 18, 17, { class: "final-card-title" });
-        addTextLines(effects, row.detail, table.x + columns.date + columns.event + 22, y + 18, 17, { class: "final-label" });
       });
+      const bkEl = make("text", {
+        x: (xBreakL + xBreakR) / 2, y: spineY - 21, "text-anchor": "middle",
+        fill: "#8896a9", "font-size": 10, "font-weight": 700, "font-family": F, "font-style": "italic"
+      });
+      bkEl.textContent = "scale break";
+      effects.appendChild(bkEl);
 
+      const renderEvent = ({ x, above, year, name, sub, color, featured }) => {
+        const dotR = featured ? 9 : 6;
+        const connLen = featured ? 72 : 54;
+        const sign = above ? -1 : 1;
+        const connY2 = spineY + sign * connLen;
+
+        effects.appendChild(make("line", {
+          x1: x, y1: spineY + sign * dotR, x2: x, y2: connY2,
+          stroke: color, "stroke-width": featured ? 2.5 : 1.8, opacity: 0.75
+        }));
+        effects.appendChild(make("circle", {
+          cx: x, cy: spineY, r: dotR,
+          fill: color, stroke: "#f8fafc", "stroke-width": featured ? 3.5 : 2.5
+        }));
+
+        const yearY = above ? connY2 - 8 : connY2 + 20;
+        const yearEl = make("text", {
+          x, y: yearY, "text-anchor": "middle",
+          fill: color, "font-size": featured ? 16 : 13, "font-weight": 900, "font-family": F
+        });
+        yearEl.textContent = year;
+        effects.appendChild(yearEl);
+
+        const nameY = above ? yearY - 20 : yearY + 19;
+        const nameEl = make("text", {
+          x, y: nameY, "text-anchor": "middle",
+          fill: "#172033", "font-size": featured ? 14 : 12.5, "font-weight": featured ? 900 : 800, "font-family": F
+        });
+        nameEl.textContent = name;
+        effects.appendChild(nameEl);
+
+        if (sub) {
+          const subY = above ? nameY - 16 : nameY + 17;
+          const subEl = make("text", {
+            x, y: subY, "text-anchor": "middle",
+            fill: "#5d6677", "font-size": 11, "font-weight": 700, "font-family": F
+          });
+          subEl.textContent = sub;
+          effects.appendChild(subEl);
+        }
+      };
+
+      // Above spine: hires and joins
+      [
+        { yr: 1977,    year: "1977",     name: "Patricia Switzer",   sub: "hired",            color: "#1e40af" },
+        { yr: 1992,    year: "1992",     name: "Guerrero & Johnson", sub: "hired",            color: "#0f766e" },
+        { yr: 1999,    year: "1999",     name: "Vanessa Meadows",    sub: "hired",            color: "#d97706", featured: true },
+        { yr: 2018,    year: "2018",     name: "Jenifer Ellner",     sub: "becomes director", color: "#dc2626" },
+        { yr: 2021,    year: "2021",     name: "Cody Dayton",        sub: "joins",            color: "#57534e" },
+        { yr: 2022,    year: "2022",     name: "K. Hanewinkel",      sub: "joins",            color: "#7f1d1d" },
+        { yr: 2022.83, year: "Nov 2022", name: "Kortnie Sronce",     sub: "hired",            color: "#334155", featured: true },
+      ].forEach(ev => renderEvent({ x: fx(ev.yr), above: true, ...ev }));
+
+      // Below spine: hires and terminations
+      [
+        { yr: 2001,    year: "2001",     name: "Stokes & Daniel",  sub: "hired",                    color: "#0369a1" },
+        { yr: 2019.22, year: "Apr 2019", name: "Doritha Daniel",   sub: "terminated by Ellner",     color: "#dc2626" },
+        { yr: 2022.46, year: "Jun 2022", name: "Vanessa Meadows",  sub: "+ four others terminated", color: "#991b1b", featured: true },
+      ].forEach(ev => renderEvent({ x: fx(ev.yr), above: false, ...ev }));
+
+      // 5-month gap annotation between Jun 2022 termination and Sronce hire
+      const xFired = fx(2022.46);
+      const xSronce = fx(2022.83);
+      const annotY = spineY - 22;
+      effects.appendChild(make("line", {
+        x1: xFired + 4, y1: annotY, x2: xSronce - 6, y2: annotY,
+        stroke: "#6366f1", "stroke-width": 1.8, "stroke-dasharray": "5 3",
+        "stroke-linecap": "round", opacity: 0.9
+      }));
+      effects.appendChild(make("line", { x1: xFired + 4, y1: annotY - 5, x2: xFired + 4, y2: annotY + 5, stroke: "#6366f1", "stroke-width": 1.8, "stroke-linecap": "round" }));
+      effects.appendChild(make("line", { x1: xSronce - 6, y1: annotY - 5, x2: xSronce - 6, y2: annotY + 5, stroke: "#6366f1", "stroke-width": 1.8, "stroke-linecap": "round" }));
+      const gapEl = make("text", {
+        x: (xFired + xSronce) / 2, y: annotY - 9, "text-anchor": "middle",
+        fill: "#4338ca", "font-size": 11.5, "font-weight": 800, "font-family": F
+      });
+      gapEl.textContent = "5-month gap";
+      effects.appendChild(gapEl);
+
+      const hint = make("text", { class: "final-hint", x: 610, y: 618 });
+      hint.textContent = "Click or press Space to restart";
+      effects.appendChild(hint);
     }
 
     function employeeByName(name) {
@@ -1047,14 +1022,15 @@
     function phaseIcon(group, emp, x, y, scale, opacity = 1) {
       const gradientColors = {
         "Vanessa Meadows": "#d97706",
-        "Patricia Switzer": "#1d4ed8",
-        "Peggyann Guerrero": "#047857",
-        "April Johnson": "#be123c",
-        "Cozetta Stokes": "#5b21b6",
-        "Doritha Daniel": "#0f766e",
-        "Jenifer Ellner": "#d97706",
-        "Kimberlee Hanewinkel": "#2563eb",
-        "Cody Dayton": "#b91c1c"
+        "Patricia Switzer": "#1e40af",
+        "Peggyann Guerrero": "#0f766e",
+        "April Johnson": "#1d4ed8",
+        "Cozetta Stokes": "#0369a1",
+        "Doritha Daniel": "#115e59",
+        "Jenifer Ellner": "#dc2626",
+        "Kimberlee Hanewinkel": "#991b1b",
+        "Cody Dayton": "#57534e",
+        "Kortnie Sronce": "#64748b"
       };
       const icon = make("g", {
         transform: `translate(${x} ${y})`,
@@ -1079,8 +1055,7 @@
     function showPhaseOverlay(phase) {
       activePhase = phase;
       effects.innerHTML = "";
-      if (phase.variant === "firing") drawBurst(phase.event || null, 0.58);
-      else svg.style.transform = "translate(0, 0)";
+      svg.style.transform = "translate(0, 0)";
 
       const yearBadge = document.getElementById("yearBadge");
       yearBadge.setAttribute("opacity", "0.06");
@@ -1100,14 +1075,13 @@
         x: 0,
         y: 0,
         width: 1220,
-        height: 590,
-        opacity: phase.variant === "firing" ? 0.52 : 0.76
+        height: 640
       }));
 
       const titleLines = Array.isArray(phase.title) ? phase.title : [phase.title];
       titleLines.forEach((line, i) => {
         const title = make("text", {
-          class: phase.variant === "vanessa-fired" ? "phase-title long" : "phase-title",
+          class: titleLines.length > 1 ? "phase-title long" : "phase-title",
           x: 610,
           y: titleLines.length > 1 ? 72 + i * 42 : 104
         });
@@ -1166,7 +1140,7 @@
 
         const duration = make("text", { class: "duration", x: plot.left - 18, y: y + 24, "text-anchor": "end" });
         duration.setAttribute("data-index", i);
-        duration.textContent = `${emp.start}-${emp.end}`;
+        duration.textContent = `${Math.floor(emp.start)}-${Math.floor(emp.end)}`;
         bars.appendChild(duration);
 
         const track = make("rect", {
@@ -1176,7 +1150,7 @@
           y: y - barHeight / 2,
           width,
           height: barHeight,
-          rx: barHeight / 2
+          rx: 3
         });
         bars.appendChild(track);
 
@@ -1187,17 +1161,17 @@
           y: y - barHeight / 2,
           width: 0,
           height: barHeight,
-          rx: barHeight / 2,
+          rx: 3,
           fill: `url(#${emp.gradient})`
         });
         bars.appendChild(bar);
 
         const label = make("text", { class: "bar-label", "data-index": i, x: startX + 12, y: y + 4 });
-        label.textContent = `${emp.start}-${emp.end}`;
+        label.textContent = `${Math.floor(emp.start)}-${Math.floor(emp.end)}`;
         bars.appendChild(label);
 
-        const icon = make("g", { class: emp.featured ? "icon-shell meadows-halo" : "icon-shell", "data-index": i, transform: `translate(${startX} ${y})` });
-        const gradientColors = ["#d97706", "#1d4ed8", "#047857", "#be123c", "#5b21b6", "#0f766e", "#d97706", "#2563eb", "#b91c1c"];
+        const icon = make("g", { class: "icon-shell", "data-index": i, transform: `translate(${startX} ${y})` });
+        const gradientColors = ["#d97706", "#1e40af", "#0f766e", "#1d4ed8", "#0369a1", "#115e59", "#dc2626", "#991b1b", "#57534e", "#64748b"];
         if (iconDataUrls[emp.name]) {
           uploadedIcon(icon, iconDataUrls[emp.name], gradientColors[i], iconScale);
         } else {
@@ -1253,12 +1227,12 @@
       if (elapsed >= durationMs) {
         const state = { year: maxYear, event: null, eventProgress: 0 };
         renderTimelineState(state);
-        drawGameOver();
+        drawFinalTimeline();
         ended = true;
         playing = false;
         pausedAt = performance.now();
         yearText.textContent = maxYear.toString();
-        playPause.textContent = "Play / Space";
+        playPause.textContent = "Restart / Space";
         requestAnimationFrame(drawFrame);
         return;
       }
@@ -1293,7 +1267,7 @@
         const progress = clamp((currentYear - emp.start) / (endYear - emp.start), 0, 1);
         const activeYear = clamp(currentYear, Math.max(emp.start, focusLocked ? focusStartYear : minYear), Math.min(endYear, focusLocked ? focusEndYear : maxYear));
         const x = xForYear(activeYear);
-        const isKeeper = emp.name === "Jenifer Ellner" || emp.name === "Kimberlee Hanewinkel" || emp.name === "Cody Dayton";
+        const isKeeper = emp.name === "Jenifer Ellner" || emp.name === "Kimberlee Hanewinkel" || emp.name === "Cody Dayton" || emp.name === "Kortnie Sronce";
         const isDoritha = emp.name === "Doritha Daniel";
         const isVanessa = emp.name === "Vanessa Meadows";
         const visualExitYear = endYear;
@@ -1336,9 +1310,6 @@
           duration.classList.remove("legacy-dim");
           label.classList.remove("legacy-dim");
         }
-
-        if (isKeeper && currentYear >= 2021) icon.classList.add("keeper-glow");
-        else icon.classList.remove("keeper-glow");
 
         if (progress > 0.18) label.classList.add("visible");
         else label.classList.remove("visible");
@@ -1387,11 +1358,6 @@
       }
 
       if (ended) {
-        if (!finalTimelineShown) {
-          drawFinalTimeline();
-          playPause.textContent = "Restart / Space";
-          return;
-        }
         startTime = performance.now();
         pausedAt = null;
         ended = false;
@@ -1499,12 +1465,6 @@
     showControlsBtn.addEventListener("click", () => {
       controls.classList.remove("hidden");
       showControlsBtn.classList.add("hidden");
-    });
-
-    frameStyle.addEventListener("change", () => {
-      iconFrameStyle = frameStyle.value;
-      persistIcons();
-      drawRows();
     });
 
     function loadImage(src) {
