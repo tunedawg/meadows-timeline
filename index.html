@@ -531,11 +531,11 @@
 
   <script>
     const employees = [
-      { name: "Vanessa Meadows", start: 1999, end: 2022, exitYear: 2022.46, gradient: "g8", featured: true },
-      { name: "Patricia Switzer", start: 1977, end: 2022, exitYear: 2022.08, gradient: "g0" },
-      { name: "Peggyann Guerrero", start: 1992, end: 2022, exitYear: 2022.44, gradient: "g1" },
-      { name: "April Johnson", start: 1992, end: 2022, exitYear: 2022.45, gradient: "g2" },
-      { name: "Cozetta Stokes", start: 2001, end: 2022, exitYear: 2022.38, gradient: "g3" },
+      { name: "Vanessa Meadows", start: 1999, end: 2022, exitYear: 2022.54, gradient: "g8", featured: true },
+      { name: "Patricia Switzer", start: 1977, end: 2022, exitYear: 2022.04, gradient: "g0" },
+      { name: "Peggyann Guerrero", start: 1992, end: 2022, exitYear: 2022.29, gradient: "g1" },
+      { name: "April Johnson", start: 1992, end: 2022, exitYear: 2022.415, gradient: "g2" },
+      { name: "Cozetta Stokes", start: 2001, end: 2022, exitYear: 2022.165, gradient: "g3" },
       { name: "Doritha Daniel", start: 2001, end: 2019, exitYear: 2019.22, gradient: "g4" },
       { name: "Jenifer Ellner", start: 2018, end: 2026, gradient: "g5" },
       { name: "Kimberlee Hanewinkel", start: 2022, end: 2026, gradient: "g6" },
@@ -571,8 +571,8 @@
       { from: 2018, to: 2019, ms: 1800 },   // cumulative: 14300  (pause follows at 2018)
       { from: 2019, to: 2021, ms: 3600 },   // cumulative: 17900  (1800ms/yr — same rate)
       { from: 2021, to: 2022, ms: 2400 },   // cumulative: 20300  (2400ms/yr — gradual decel)
-      { from: 2022, to: 2023, ms: 4500 },   // cumulative: 24800  (4500ms/yr — final act)
-      { from: 2023, to: 2024, ms: 4000 }    // cumulative: 28800  (4000ms/yr — nearly same)
+      { from: 2022, to: 2023, ms: 12000 },  // cumulative: 32300  (12000ms/yr — sequential exits)
+      { from: 2023, to: 2024, ms: 4000 }    // cumulative: 36300  (4000ms/yr — coda)
     ];
     const durationMs = segments.reduce((sum, segment) => sum + segment.ms, 0);
     const phaseStops = [
@@ -581,10 +581,10 @@
       { year: 2019, elapsed: 14300, title: "2019: Ellner Terminates Doritha Daniel", people: ["Jenifer Ellner", "Doritha Daniel"], variant: "fade-doritha" },
       { year: 2021, elapsed: 17900, event: "kim-cody", title: "2021: Cody Dayton Joins Orthopedics", people: ["Cody Dayton"], variant: "omen" },
       { year: 2022, elapsed: 20300, event: "kim-cody", title: "2022: Kimberlee Hanewinkel Joins Orthopedics", people: ["Kimberlee Hanewinkel"], variant: "omen" },
-      { year: 2022.46, elapsed: 22370, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
-      { year: 2022.46, elapsed: 22370, title: "June–July 2022: Five Long-Tenure Employees Depart", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
-      { year: 2022.46, elapsed: 22370, title: ["June 17, 2022: Washington University", "terminates Vanessa Meadows", "after 23 years of service."], people: ["Vanessa Meadows"], variant: "vanessa-fired" },
-      { year: 2022.83, elapsed: 24035, title: ["November 2022: Kortnie Sronce Joins Orthopedics", "Five months after Vanessa Meadows' termination."], people: ["Kortnie Sronce"], variant: "omen" }
+      { year: 2022.70, elapsed: 28700, event: "legacy-exit", title: "", people: [], variant: "firing-blast" },
+      { year: 2022.70, elapsed: 28700, title: "June–July 2022: Five Long-Tenure Employees Depart", people: ["Vanessa Meadows", "Patricia Switzer", "Peggyann Guerrero", "April Johnson", "Cozetta Stokes"], variant: "firing" },
+      { year: 2022.70, elapsed: 28700, title: ["June 17, 2022: Washington University", "terminates Vanessa Meadows", "after 23 years of service."], people: ["Vanessa Meadows"], variant: "vanessa-fired" },
+      { year: 2022.95, elapsed: 31700, title: ["November 2022: Kortnie Sronce Joins Orthopedics", "Five months after Vanessa Meadows' termination."], people: ["Kortnie Sronce"], variant: "omen" }
     ];
     const iconDataUrls = {};
     const storageKey = "employee-tenure-timeline-icons-v1";
@@ -1280,7 +1280,7 @@
         const isDoritha = emp.name === "Doritha Daniel";
         const isVanessa = emp.name === "Vanessa Meadows";
         const visualExitYear = endYear;
-        const exitWindow = focusLocked && visualExitYear >= 2022 ? 0.24 : 0.45;
+        const exitWindow = focusLocked ? 0.24 : (visualExitYear >= 2022 ? 0.125 : 0.45);
         const exitProgress = isKeeper ? 0 : clamp((currentYear - visualExitYear) / exitWindow, 0, 1);
         const exitLift = -36 * exitProgress;
         const exitDrift = 38 * exitProgress;
