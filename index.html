@@ -249,6 +249,13 @@
       font-weight: 700;
     }
 
+    .dob-annot {
+      fill: #9ca3af;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
     .track {
       fill: rgba(36, 48, 67, 0.07);
     }
@@ -466,6 +473,22 @@
         <div class="controls" aria-label="Timeline controls">
           <button class="primary" id="playPause" type="button">Start / Space</button>
           <button id="restart" type="button">Restart</button>
+          <select id="phaseNav" aria-label="Jump to phase">
+            <option value="">Jump to phase…</option>
+            <option value="0">Phase 1 — 2018: Ellner Becomes Director</option>
+            <option value="1">Phase 2 — 2019: Ellner Terminates Daniel</option>
+            <option value="2">Phase 3 — 2021: Dayton Joins</option>
+            <option value="3">Phase 4 — 2022: Hanewinkel Joins</option>
+            <option value="4">Phase 5 — June 2022: Five Employees Depart</option>
+            <option value="5">Phase 6 — June 2022: Meadows Terminated</option>
+            <option value="6">Phase 7 — Nov 2022: Sronce Joins</option>
+          </select>
+          <label style="display:inline-flex;align-items:center;gap:5px;font:700 12px/1 Inter,ui-sans-serif,sans-serif;color:#344054;cursor:pointer">
+            <input type="checkbox" id="dobHanewinkel" style="cursor:pointer"> Hanewinkel DOB
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:5px;font:700 12px/1 Inter,ui-sans-serif,sans-serif;color:#344054;cursor:pointer">
+            <input type="checkbox" id="dobDayton" style="cursor:pointer"> Dayton DOB
+          </label>
           <button id="fullscreenBtn" type="button">Fullscreen</button>
           <button id="hideControlsBtn" type="button">Hide Controls</button>
           <select id="iconPerson" aria-label="Select person for icon upload">
@@ -538,8 +561,8 @@
       { name: "Cozetta Stokes", start: 2001, end: 2022, exitYear: 2022.165, gradient: "g3" },
       { name: "Doritha Daniel", start: 2001, end: 2019, exitYear: 2019.22, gradient: "g4" },
       { name: "Jenifer Ellner", start: 2018, end: 2026, gradient: "g5" },
-      { name: "Kimberlee Hanewinkel", start: 2022, end: 2026, gradient: "g6" },
-      { name: "Cody Dayton", start: 2021, end: 2026, gradient: "g7" },
+      { name: "Kimberlee Hanewinkel", start: 2022, end: 2026, gradient: "g6", dob: "Mar 16, 1989" },
+      { name: "Cody Dayton", start: 2021, end: 2026, gradient: "g7", dob: "Apr 24, 1992" },
       { name: "Kortnie Sronce", start: 2022.83, end: 2024, gradient: "g9" }
     ];
 
@@ -613,6 +636,16 @@
     let displayYear = minYear;
     let focusLocked = false;
     let finalTimelineShown = false;
+    const dobVisible = { "Kimberlee Hanewinkel": false, "Cody Dayton": false };
+    const phaseNavTargets = [
+      { idx: 0, elapsed: 12500, year: 2018, event: "jen",       focusLocked: false },
+      { idx: 2, elapsed: 14300, year: 2019, event: null,         focusLocked: false },
+      { idx: 3, elapsed: 17900, year: 2021, event: "kim-cody",   focusLocked: true  },
+      { idx: 4, elapsed: 20300, year: 2022, event: "kim-cody",   focusLocked: true  },
+      { idx: 6, elapsed: 28700, year: 2022.70, event: null,      focusLocked: true  },
+      { idx: 7, elapsed: 28700, year: 2022.70, event: null,      focusLocked: true  },
+      { idx: 8, elapsed: 31700, year: 2022.95, event: null,      focusLocked: true  },
+    ];
 
     const ns = "http://www.w3.org/2000/svg";
     const make = (tag, attrs = {}) => {
@@ -1165,6 +1198,12 @@
         duration.textContent = `${Math.floor(emp.start)}-${Math.floor(emp.end)}`;
         bars.appendChild(duration);
 
+        if (emp.dob && dobVisible[emp.name]) {
+          const dobEl = make("text", { class: "dob-annot", x: plot.left - 18, y: y + 38, "text-anchor": "end" });
+          dobEl.textContent = `b. ${emp.dob}`;
+          bars.appendChild(dobEl);
+        }
+
         const track = make("rect", {
           class: "track",
           "data-index": i,
@@ -1412,6 +1451,47 @@
         pausedAt = null;
       }
     }
+
+    document.getElementById("dobHanewinkel").addEventListener("change", e => {
+      dobVisible["Kimberlee Hanewinkel"] = e.target.checked;
+      drawRows();
+      if (!activePhase) renderTimelineState(timelineState(currentElapsed));
+      if (activePhase) showPhaseOverlay(activePhase);
+    });
+
+    document.getElementById("dobDayton").addEventListener("change", e => {
+      dobVisible["Cody Dayton"] = e.target.checked;
+      drawRows();
+      if (!activePhase) renderTimelineState(timelineState(currentElapsed));
+      if (activePhase) showPhaseOverlay(activePhase);
+    });
+
+    document.getElementById("phaseNav").addEventListener("change", e => {
+      const val = e.target.value;
+      e.target.value = "";
+      if (val === "") return;
+      const target = phaseNavTargets[parseInt(val, 10)];
+      if (!target) return;
+      const phase = phaseStops[target.idx];
+
+      playing = false;
+      ended = false;
+      hasStarted = true;
+      blastStartTime = null;
+      blastComplete = false;
+      focusLocked = target.focusLocked;
+      finalTimelineShown = false;
+
+      currentElapsed = target.elapsed;
+      startTime = performance.now() - currentElapsed;
+      pausedAt = performance.now();
+      phaseIndex = target.idx + 1;
+
+      clearPhaseOverlay();
+      renderTimelineState({ ...timelineState(target.elapsed), event: target.event || null, eventProgress: 0.58 });
+      showPhaseOverlay(phase);
+      playPause.textContent = "Continue / Space";
+    });
 
     playPause.addEventListener("click", () => {
       togglePlayback();
