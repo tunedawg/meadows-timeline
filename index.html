@@ -249,11 +249,10 @@
       font-weight: 700;
     }
 
-    .dob-annot {
-      fill: #9ca3af;
-      font-size: 11px;
-      font-weight: 700;
-      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    button.dob-btn.active {
+      background: #24364f;
+      color: #ffffff;
+      border-color: #24364f;
     }
 
     .track {
@@ -483,12 +482,8 @@
             <option value="5">Phase 6 — June 2022: Meadows Terminated</option>
             <option value="6">Phase 7 — Nov 2022: Sronce Joins</option>
           </select>
-          <label style="display:inline-flex;align-items:center;gap:5px;font:700 12px/1 Inter,ui-sans-serif,sans-serif;color:#344054;cursor:pointer">
-            <input type="checkbox" id="dobHanewinkel" style="cursor:pointer"> Hanewinkel DOB
-          </label>
-          <label style="display:inline-flex;align-items:center;gap:5px;font:700 12px/1 Inter,ui-sans-serif,sans-serif;color:#344054;cursor:pointer">
-            <input type="checkbox" id="dobDayton" style="cursor:pointer"> Dayton DOB
-          </label>
+          <button id="dobBtnHanewinkel" type="button" class="dob-btn">Hanewinkel DOB</button>
+          <button id="dobBtnDayton" type="button" class="dob-btn">Dayton DOB</button>
           <button id="fullscreenBtn" type="button">Fullscreen</button>
           <button id="hideControlsBtn" type="button">Hide Controls</button>
           <select id="iconPerson" aria-label="Select person for icon upload">
@@ -542,6 +537,7 @@
           <g id="grid" class="axis"></g>
           <g id="bars"></g>
           <g id="icons"></g>
+          <g id="dob-markers"></g>
           <g id="yearBadge">
             <rect class="year-pill" x="30" y="544" width="148" height="44" rx="10"/>
             <text class="year-text" id="yearText" x="104" y="566">1977</text>
@@ -1070,6 +1066,62 @@
       effects.appendChild(hint);
     }
 
+    const DOB_DECIMAL_YEARS = {
+      "Kimberlee Hanewinkel": 1989.2055,  // Mar 16 → day 75 of 365
+      "Cody Dayton": 1992.3142            // Apr 24 → day 115 of 366 (leap year)
+    };
+    const DOB_AXIS_COLORS = {
+      "Kimberlee Hanewinkel": "#991b1b",
+      "Cody Dayton": "#57534e"
+    };
+
+    function drawDobMarkers() {
+      const dobMarkers = document.getElementById("dob-markers");
+      dobMarkers.innerHTML = "";
+      dobMarkers.setAttribute("opacity", focusLocked ? 0 : 1);
+      const bottom = plot.top + employees.length * plot.rowGap + 18;
+      const F = "Inter, ui-sans-serif, system-ui, sans-serif";
+      const iconCY = bottom - 96;   // icon center — clear of all bar rows at these x positions
+      const stemTop = iconCY + 28;  // just below icon frame
+
+      employees.filter(emp => emp.dob && dobVisible[emp.name]).forEach(emp => {
+        const x = historyXForYear(DOB_DECIMAL_YEARS[emp.name]);
+        const color = DOB_AXIS_COLORS[emp.name];
+        const yr = emp.dob.split(", ").pop();
+
+        // thin vertical stem from icon down to axis
+        dobMarkers.appendChild(make("line", {
+          x1: x, y1: stemTop, x2: x, y2: bottom + 12,
+          stroke: "#b4232f", "stroke-width": 2, "stroke-linecap": "round", opacity: 0.55
+        }));
+
+        // fat axis tick
+        dobMarkers.appendChild(make("line", {
+          x1: x, y1: bottom - 10, x2: x, y2: bottom + 12,
+          stroke: "#b4232f", "stroke-width": 5.5, "stroke-linecap": "round"
+        }));
+
+        // large icon
+        const iconG = make("g", { transform: `translate(${x} ${iconCY})` });
+        if (iconDataUrls[emp.name]) uploadedIcon(iconG, iconDataUrls[emp.name], color, 1.0);
+        else placeholderIcon(iconG, color, 1.0);
+        dobMarkers.appendChild(iconG);
+
+        // pill label below axis
+        const pillW = 76, pillH = 24, pillRx = 6;
+        dobMarkers.appendChild(make("rect", {
+          x: x - pillW / 2, y: bottom + 17, width: pillW, height: pillH, rx: pillRx,
+          fill: "#fee2e2", stroke: "#b4232f", "stroke-width": 1.5
+        }));
+        const lbl = make("text", {
+          x, y: bottom + 34, "text-anchor": "middle",
+          fill: "#991b1b", "font-size": 12, "font-weight": 800, "font-family": F
+        });
+        lbl.textContent = `b. ${yr}`;
+        dobMarkers.appendChild(lbl);
+      });
+    }
+
     function employeeByName(name) {
       return employees.find((emp) => emp.name === name);
     }
@@ -1198,12 +1250,6 @@
         duration.textContent = `${Math.floor(emp.start)}-${Math.floor(emp.end)}`;
         bars.appendChild(duration);
 
-        if (emp.dob && dobVisible[emp.name]) {
-          const dobEl = make("text", { class: "dob-annot", x: plot.left - 18, y: y + 38, "text-anchor": "end" });
-          dobEl.textContent = `b. ${emp.dob}`;
-          bars.appendChild(dobEl);
-        }
-
         const track = make("rect", {
           class: "track",
           "data-index": i,
@@ -1318,6 +1364,7 @@
       nowLine.setAttribute("y2", bottom);
       grid.querySelectorAll(".history-grid").forEach((node) => node.setAttribute("opacity", focusLocked ? 0 : 1));
       grid.querySelectorAll(".focus-grid").forEach((node) => node.setAttribute("opacity", focusLocked ? 1 : 0));
+      document.getElementById("dob-markers").setAttribute("opacity", focusLocked ? 0 : 1);
 
       employees.forEach((emp, i) => {
         const rowY = plot.top + i * plot.rowGap;
@@ -1452,18 +1499,16 @@
       }
     }
 
-    document.getElementById("dobHanewinkel").addEventListener("change", e => {
-      dobVisible["Kimberlee Hanewinkel"] = e.target.checked;
-      drawRows();
-      if (!activePhase) renderTimelineState(timelineState(currentElapsed));
-      if (activePhase) showPhaseOverlay(activePhase);
+    document.getElementById("dobBtnHanewinkel").addEventListener("click", e => {
+      dobVisible["Kimberlee Hanewinkel"] = !dobVisible["Kimberlee Hanewinkel"];
+      e.target.classList.toggle("active", dobVisible["Kimberlee Hanewinkel"]);
+      drawDobMarkers();
     });
 
-    document.getElementById("dobDayton").addEventListener("change", e => {
-      dobVisible["Cody Dayton"] = e.target.checked;
-      drawRows();
-      if (!activePhase) renderTimelineState(timelineState(currentElapsed));
-      if (activePhase) showPhaseOverlay(activePhase);
+    document.getElementById("dobBtnDayton").addEventListener("click", e => {
+      dobVisible["Cody Dayton"] = !dobVisible["Cody Dayton"];
+      e.target.classList.toggle("active", dobVisible["Cody Dayton"]);
+      drawDobMarkers();
     });
 
     document.getElementById("phaseNav").addEventListener("change", e => {
@@ -1534,6 +1579,7 @@
       bars.classList.remove("backdrop-blur");
       icons.classList.remove("backdrop-blur");
       renderTimelineState({ year: minYear, event: null, eventProgress: 0 });
+      drawDobMarkers();
       playPause.textContent = "Start / Space";
     });
 
@@ -1634,6 +1680,7 @@
         persistIcons();
         upload.value = "";
         drawRows();
+        drawDobMarkers();
         if (!activePhase) renderTimelineState(timelineState(currentElapsed));
         if (activePhase) showPhaseOverlay(activePhase);
       };
@@ -1643,6 +1690,7 @@
     loadPersistedIcons();
     drawGrid();
     drawRows();
+    drawDobMarkers();
     requestAnimationFrame(drawFrame);
   </script>
 </body>
