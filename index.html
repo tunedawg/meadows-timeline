@@ -1691,6 +1691,32 @@
     drawGrid();
     drawRows();
     drawDobMarkers();
+    // Puppeteer recording hook -- exposes animation control without breaking the live page
+    window.__anim = {
+      get currentElapsed() { return currentElapsed; },
+      get phaseIndex()     { return phaseIndex; },
+      get playing()        { return playing; },
+      get ended()          { return ended; },
+      seekTo: function(elapsed, phaseIdx, locked) {
+        playing = false; ended = false; hasStarted = true;
+        blastStartTime = null; blastComplete = false;
+        focusLocked = !!locked; finalTimelineShown = false;
+        currentElapsed = elapsed;
+        startTime = performance.now() - elapsed;
+        pausedAt  = performance.now();
+        phaseIndex = phaseIdx;
+        clearPhaseOverlay();
+        renderTimelineState(timelineState(elapsed));
+      },
+      resume: function() {
+        if (ended) return;
+        clearPhaseOverlay();
+        playing   = true;
+        pausedAt  = null;
+        startTime = performance.now() - currentElapsed;
+      }
+    };
+
     requestAnimationFrame(drawFrame);
   </script>
 </body>
